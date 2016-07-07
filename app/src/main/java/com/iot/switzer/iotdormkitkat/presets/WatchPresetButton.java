@@ -10,6 +10,8 @@ import android.widget.Button;
 public class WatchPresetButton extends Button {
     private String name;
     private static final int MAX_COLOR = 16777215;
+    protected  static final float MIN_SATURATION = .7f;
+
     private boolean enabled;
     private int color;
 
@@ -52,6 +54,11 @@ public class WatchPresetButton extends Button {
 
     public static int colorFromName(String name)
     {
-        return -(name.hashCode() % MAX_COLOR);
+        float[] hsv = new float[3];
+        Color.colorToHSV(-(name.hashCode() % MAX_COLOR),hsv);
+
+        hsv[1] = hsv[1] < MIN_SATURATION ? MIN_SATURATION : hsv[1];
+
+        return Color.HSVToColor(hsv);
     }
 }
